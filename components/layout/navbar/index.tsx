@@ -1,61 +1,80 @@
 import CartModal from 'components/cart/modal';
-import LogoSquare from 'components/logo-square';
 import { getMenu } from 'lib/shopify';
-import { Menu } from 'lib/shopify/types';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import MobileMenu from './mobile-menu';
-import Search, { SearchSkeleton } from './search';
-
-const { SITE_NAME } = process.env;
 
 export async function Navbar() {
   const menu = await getMenu('next-js-frontend-header-menu');
 
   return (
-    <nav className="relative flex items-center justify-between p-4 lg:px-6">
-      <div className="block flex-none md:hidden">
-        <Suspense fallback={null}>
-          <MobileMenu menu={menu} />
-        </Suspense>
-      </div>
-      <div className="flex w-full items-center">
-        <div className="flex w-full md:w-1/3">
-          <Link
-            href="/"
-            prefetch={true}
-            className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
-          >
-            <LogoSquare />
-            <div className="ml-2 flex-none text-sm font-medium uppercase md:hidden lg:block">
-              {SITE_NAME}
-            </div>
-          </Link>
-          {menu.length ? (
-            <ul className="hidden gap-6 text-sm md:flex md:items-center">
-              {menu.map((item: Menu) => (
-                <li key={item.title}>
-                  <Link
-                    href={item.path}
-                    prefetch={true}
-                    className="text-neutral-500 underline-offset-4 hover:text-black hover:underline dark:text-neutral-400 dark:hover:text-neutral-300"
+    <>
+      <div className="h-[80px]"></div>
+      
+      <header className="fixed top-0 left-0 right-0 bg-white z-50">
+        <div className="h-[2px] w-full bg-[#006B3F]"></div>
+        
+        <div className="border-b border-[#E5E5E5]">
+          <div className="max-w-[1400px] mx-auto">
+            <div className="flex items-center justify-between h-[78px] px-8">
+              {/* Logo */}
+              <Link href="/" className="flex flex-col">
+                <span className="text-[24px] font-bold text-[#006B3F]">
+                  LE BON CAFÉ CORSE
+                </span>
+                <span className="text-[12px] text-black/70">
+                  DEPUIS 1932
+                </span>
+              </Link>
+
+              {/* Navigation */}
+              <div className="hidden md:flex items-center">
+                <div className="flex items-center space-x-12">
+                  <Link 
+                    href="/notre-histoire" 
+                    className="text-black hover:text-[#006B3F] text-[15px]"
                   >
-                    {item.title}
+                    Notre Histoire
                   </Link>
-                </li>
-              ))}
-            </ul>
-          ) : null}
+                  <Link 
+                    href="/search" 
+                    className="text-black hover:text-[#006B3F] text-[15px]"
+                  >
+                    Nos Cafés
+                  </Link>
+                  <Link 
+                    href="/processus" 
+                    className="text-black hover:text-[#006B3F] text-[15px]"
+                  >
+                    Notre Processus
+                  </Link>
+                  <Link 
+                    href="/contact" 
+                    className="text-black hover:text-[#006B3F] text-[15px]"
+                  >
+                    Contact
+                  </Link>
+                </div>
+              </div>
+
+              {/* Panier */}
+              <div className="hidden md:block">
+                <CartModal />
+              </div>
+
+              {/* Menu Mobile */}
+              <div className="md:hidden flex items-center">
+                <Suspense fallback={null}>
+                  <MobileMenu menu={menu} />
+                </Suspense>
+                <div className="ml-2">
+                  <CartModal />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="hidden justify-center md:flex md:w-1/3">
-          <Suspense fallback={<SearchSkeleton />}>
-            <Search />
-          </Suspense>
-        </div>
-        <div className="flex justify-end md:w-1/3">
-          <CartModal />
-        </div>
-      </div>
-    </nav>
+      </header>
+    </>
   );
 }

@@ -1,20 +1,23 @@
-import { Carousel } from 'components/carousel';
-import { ThreeItemGrid } from 'components/grid/three-items';
-import Footer from 'components/layout/footer';
+import { getProducts } from 'lib/shopify';
+import { Suspense } from 'react';
+import HomePageWrapper from '../components/pages/home-wrapper';
 
 export const metadata = {
-  description: 'High-performance ecommerce store built with Next.js, Vercel, and Shopify.',
+  description: 'Torréfaction artisanale corse depuis 1932.',
   openGraph: {
     type: 'website'
   }
 };
 
-export default function HomePage() {
+export default async function Page() {
+  const products = await getProducts({
+    sortKey: 'CREATED_AT',
+    reverse: true
+  });
+
   return (
-    <>
-      <ThreeItemGrid />
-      <Carousel />
-      <Footer />
-    </>
+    <Suspense>
+      <HomePageWrapper products={products} />
+    </Suspense>
   );
 }

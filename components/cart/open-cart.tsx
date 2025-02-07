@@ -1,5 +1,5 @@
-import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
+import { ShoppingBag } from 'lucide-react';
 
 export default function OpenCart({
   className,
@@ -9,13 +9,13 @@ export default function OpenCart({
   quantity?: number;
 }) {
   return (
-    <div className="relative flex h-11 w-11 items-center justify-center rounded-md border border-neutral-200 text-black transition-colors dark:border-neutral-700 dark:text-white">
-      <ShoppingCartIcon
-        className={clsx('h-4 transition-all ease-in-out hover:scale-110', className)}
+    <div className="relative flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#006B3F] text-[#006B3F] transition-all hover:bg-[#006B3F] hover:text-white group">
+      <ShoppingBag
+        className={clsx('h-5 w-5 transition-all ease-in-out', className)}
       />
 
       {quantity ? (
-        <div className="absolute right-0 top-0 -mr-2 -mt-2 h-4 w-4 rounded bg-blue-600 text-[11px] font-medium text-white">
+        <div className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#006B3F] text-[11px] font-medium text-white border-2 border-white">
           {quantity}
         </div>
       ) : null}
