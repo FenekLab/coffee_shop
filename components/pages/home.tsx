@@ -3,12 +3,12 @@
 import Grid from 'components/grid';
 import { Button } from 'components/ui/button';
 import { motion } from 'framer-motion';
-import { Product } from 'lib/shopify/types';
+import { Collection, Product } from 'lib/shopify/types';
 import { Bean, ChevronRight, Coffee, Leaf } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
-export default function HomePage({ products }: { products: Product[] }) {
+export default function HomePage({ products, collections }: { products: Product[], collections: Collection[] }) {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -89,6 +89,38 @@ export default function HomePage({ products }: { products: Product[] }) {
               </div>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      {/* Collections Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-serif font-bold text-[#006B3F] mb-4">Nos Collections</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Découvrez nos collections soigneusement sélectionnées pour vous offrir le meilleur du café et du thé.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {collections.map((collection) => (
+              <Link
+                key={collection.handle}
+                href={collection.path}
+                className="group transform transition-transform duration-300 hover:scale-105"
+              >
+                <div className="bg-[#006B3F]/5 rounded-xl p-10 transition-all duration-300 hover:bg-[#006B3F]/10 h-full flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-3xl font-bold text-[#006B3F] mb-4">{collection.title}</h3>
+                    <p className="text-gray-600 text-lg mb-6">{collection.description}</p>
+                  </div>
+                  <div className="flex items-center text-[#006B3F] font-medium text-lg">
+                    Découvrir la collection
+                    <ChevronRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
