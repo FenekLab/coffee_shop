@@ -12,8 +12,13 @@ import { Image } from 'lib/shopify/types';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
-export async function generateMetadata({ params }: { params: { handle: string } }): Promise<Metadata> {
-  const product = await getProduct(params.handle);
+type Props = {
+  params: Promise<{ handle: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const resolvedParams = await params;
+  const product = await getProduct(resolvedParams.handle);
 
   if (!product) return notFound();
 
@@ -46,8 +51,9 @@ export async function generateMetadata({ params }: { params: { handle: string } 
   };
 }
 
-export default async function ProductPage({ params }: { params: { handle: string } }) {
-  const product = await getProduct(params.handle);
+export default async function ProductPage({ params }: Props) {
+  const resolvedParams = await params;
+  const product = await getProduct(resolvedParams.handle);
 
   if (!product) return notFound();
 
