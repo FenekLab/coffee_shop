@@ -3,37 +3,53 @@
 import clsx from 'clsx';
 import type { SortFilterItem } from 'lib/constants';
 import { createUrl } from 'lib/utils';
+import { Coffee, Leaf } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import type { ListItem, PathFilterItem } from '.';
 
-function PathFilterItem({ item }: { item: PathFilterItem }) {
+export function PathFilterItem({ item }: { item: PathFilterItem }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const active = pathname === item.path;
   const newParams = new URLSearchParams(searchParams.toString());
   const DynamicTag = active ? 'p' : Link;
+  const isThé = item.path.includes('the');
 
   newParams.delete('q');
 
   return (
-    <li className="mt-2 flex text-black dark:text-white" key={item.title}>
+    <li className="w-full" key={item.title}>
       <DynamicTag
         href={createUrl(item.path, newParams)}
         className={clsx(
-          'w-full text-sm underline-offset-4 hover:underline dark:hover:text-neutral-100',
+          'flex items-center w-full px-4 py-2 text-sm rounded-lg transition-all duration-200',
           {
-            'underline underline-offset-4': active
+            'bg-[#006B3F] text-white font-medium': active,
+            'text-gray-600 hover:bg-[#006B3F]/10 hover:text-[#006B3F]': !active
           }
         )}
       >
+        <span className="mr-3">
+          {isThé ? (
+            <Leaf className={clsx('w-4 h-4', {
+              'text-white': active,
+              'text-[#006B3F]': !active
+            })} />
+          ) : (
+            <Coffee className={clsx('w-4 h-4', {
+              'text-white': active,
+              'text-[#006B3F]': !active
+            })} />
+          )}
+        </span>
         {item.title}
       </DynamicTag>
     </li>
   );
 }
 
-function SortFilterItem({ item }: { item: SortFilterItem }) {
+export function SortFilterItem({ item }: { item: SortFilterItem }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const active = searchParams.get('sort') === item.slug;
@@ -48,13 +64,17 @@ function SortFilterItem({ item }: { item: SortFilterItem }) {
   const DynamicTag = active ? 'p' : Link;
 
   return (
-    <li className="mt-2 flex text-sm text-black dark:text-white" key={item.title}>
+    <li className="w-full" key={item.title}>
       <DynamicTag
         prefetch={!active ? false : undefined}
         href={href}
-        className={clsx('w-full hover:underline hover:underline-offset-4', {
-          'underline underline-offset-4': active
-        })}
+        className={clsx(
+          'block w-full px-4 py-2 text-sm rounded-lg transition-all duration-200',
+          {
+            'bg-[#006B3F] text-white font-medium': active,
+            'text-gray-600 hover:bg-[#006B3F]/10 hover:text-[#006B3F]': !active
+          }
+        )}
       >
         {item.title}
       </DynamicTag>

@@ -1,69 +1,138 @@
+import { getProducts } from 'lib/shopify';
+import { Facebook, Instagram, Mail, MapPin, Phone } from 'lucide-react';
 import Link from 'next/link';
-
-import FooterMenu from 'components/layout/footer-menu';
-import LogoSquare from 'components/logo-square';
-import { getMenu } from 'lib/shopify';
-import { Suspense } from 'react';
-
-const { COMPANY_NAME, SITE_NAME } = process.env;
 
 export default async function Footer() {
   const currentYear = new Date().getFullYear();
-  const copyrightDate = 2023 + (currentYear > 2023 ? `-${currentYear}` : '');
-  const skeleton = 'w-full h-6 animate-pulse rounded bg-neutral-200 dark:bg-neutral-700';
-  const menu = await getMenu('next-js-frontend-footer-menu');
-  const copyrightName = COMPANY_NAME || SITE_NAME || '';
-
+  const products = await getProducts({
+    sortKey: 'TITLE',
+    reverse: false
+  });
+  
+  // Prendre les 5 premiers produits
+  const firstFiveProducts = products.slice(0, 5);
+  
   return (
-    <footer className="text-sm text-neutral-500 dark:text-neutral-400">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 border-t border-neutral-200 px-6 py-12 text-sm md:flex-row md:gap-12 md:px-4 min-[1320px]:px-0 dark:border-neutral-700">
-        <div>
-          <Link className="flex items-center gap-2 text-black md:pt-1 dark:text-white" href="/">
-            <LogoSquare size="sm" />
-            <span className="uppercase">{SITE_NAME}</span>
-          </Link>
-        </div>
-        <Suspense
-          fallback={
-            <div className="flex h-[188px] w-[200px] flex-col gap-2">
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
+    <footer className="bg-[#2C2C2C] text-white">
+      <div className="container mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+          {/* À Propos */}
+          <div>
+            <div className="mb-6">
+              <Link href="/" className="flex flex-col">
+                <span className="text-xl font-bold text-white">
+                  LE BON CAFÉ CORSE
+                </span>
+                <span className="text-sm text-white/70">
+                  DEPUIS 1932
+                </span>
+              </Link>
             </div>
-          }
-        >
-          <FooterMenu menu={menu} />
-        </Suspense>
-        <div className="md:ml-auto">
-          <a
-            className="flex h-8 w-max flex-none items-center justify-center rounded-md border border-neutral-200 bg-white text-xs text-black dark:border-neutral-700 dark:bg-black dark:text-white"
-            aria-label="Deploy on Vercel"
-            href="https://vercel.com/templates/next.js/nextjs-commerce"
-          >
-            <span className="px-3">▲</span>
-            <hr className="h-full border-r border-neutral-200 dark:border-neutral-700" />
-            <span className="px-3">Deploy</span>
-          </a>
+            <p className="text-white/80 text-sm leading-relaxed mb-6">
+              Torréfaction artisanale corse perpétuant un savoir-faire familial depuis 1932.
+              Notre passion : vous offrir des cafés d'exception.
+            </p>
+            <div className="flex space-x-4">
+              <a href="#" className="text-white/80 hover:text-white transition-colors">
+                <Facebook className="w-5 h-5" />
+              </a>
+              <a href="#" className="text-white/80 hover:text-white transition-colors">
+                <Instagram className="w-5 h-5" />
+              </a>
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <div>
+            <h3 className="text-lg font-bold mb-6">Navigation</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link href="/notre-histoire" className="text-white/80 hover:text-white transition-colors">
+                  Notre Histoire
+                </Link>
+              </li>
+              <li>
+                <Link href="/search" className="text-white/80 hover:text-white transition-colors">
+                  Nos Cafés
+                </Link>
+              </li>
+              <li>
+                <Link href="/processus" className="text-white/80 hover:text-white transition-colors">
+                  Notre Processus
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="text-white/80 hover:text-white transition-colors">
+                  Contact
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Nos Cafés */}
+          <div>
+            <h3 className="text-lg font-bold mb-6">Nos Cafés</h3>
+            <ul className="space-y-3">
+              {firstFiveProducts.map((product) => (
+                <li key={product.handle}>
+                  <Link 
+                    href={`/product/${product.handle}`} 
+                    className="text-white/80 hover:text-white transition-colors"
+                  >
+                    {product.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h3 className="text-lg font-bold mb-6">Contact</h3>
+            <ul className="space-y-4">
+              <li className="flex items-start space-x-3">
+                <MapPin className="w-5 h-5 text-[#006B3F] flex-shrink-0 mt-1" />
+                <span className="text-white/80">
+                  123 Route des Sanguinaires<br />
+                  20000 Ajaccio
+                </span>
+              </li>
+              <li className="flex items-center space-x-3">
+                <Phone className="w-5 h-5 text-[#006B3F]" />
+                <a href="tel:+33495123456" className="text-white/80 hover:text-white transition-colors">
+                  04 95 12 34 56
+                </a>
+              </li>
+              <li className="flex items-center space-x-3">
+                <Mail className="w-5 h-5 text-[#006B3F]" />
+                <a href="mailto:contact@leboncafecorse.fr" className="text-white/80 hover:text-white transition-colors">
+                  contact@leboncafecorse.fr
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div className="border-t border-neutral-200 py-6 text-sm dark:border-neutral-700">
-        <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-1 px-4 md:flex-row md:gap-0 md:px-4 min-[1320px]:px-0">
-          <p>
-            &copy; {copyrightDate} {copyrightName}
-            {copyrightName.length && !copyrightName.endsWith('.') ? '.' : ''} All rights reserved.
-          </p>
-          <hr className="mx-4 hidden h-4 w-[1px] border-l border-neutral-400 md:inline-block" />
-          <p>
-            <a href="https://github.com/vercel/commerce">View the source</a>
-          </p>
-          <p className="md:ml-auto">
-            <a href="https://vercel.com" className="text-black dark:text-white">
-              Created by ▲ Vercel
-            </a>
-          </p>
+
+      {/* Copyright */}
+      <div className="border-t border-white/10">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p className="text-sm text-white/60">
+              © {currentYear} Le Bon Café Corse. Tous droits réservés.
+            </p>
+            <div className="flex space-x-6 mt-4 md:mt-0">
+              <Link href="/mentions-legales" className="text-sm text-white/60 hover:text-white transition-colors">
+                Mentions Légales
+              </Link>
+              <Link href="/cgv" className="text-sm text-white/60 hover:text-white transition-colors">
+                CGV
+              </Link>
+              <Link href="/confidentialite" className="text-sm text-white/60 hover:text-white transition-colors">
+                Politique de Confidentialité
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

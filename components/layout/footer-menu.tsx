@@ -1,46 +1,58 @@
 'use client';
 
 import clsx from 'clsx';
-import { Menu } from 'lib/shopify/types';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export function FooterMenuItem({ item }: { item: Menu }) {
+interface FooterMenuItemProps {
+  href: string;
+  children: React.ReactNode;
+}
+
+export function FooterMenuItem({ href, children }: FooterMenuItemProps) {
   const pathname = usePathname();
-  const [active, setActive] = useState(pathname === item.path);
+  const [active, setActive] = useState(pathname === href);
 
   useEffect(() => {
-    setActive(pathname === item.path);
-  }, [pathname, item.path]);
+    setActive(pathname === href);
+  }, [pathname, href]);
 
   return (
     <li>
       <Link
-        href={item.path}
+        href={href}
         className={clsx(
-          'block p-2 text-lg underline-offset-4 hover:text-black hover:underline md:inline-block md:text-sm dark:hover:text-neutral-300',
+          'text-white/80 hover:text-white transition-colors',
           {
-            'text-black dark:text-neutral-300': active
+            'text-white': active
           }
         )}
       >
-        {item.title}
+        {children}
       </Link>
     </li>
   );
 }
 
-export default function FooterMenu({ menu }: { menu: Menu[] }) {
-  if (!menu.length) return null;
+interface FooterMenuProps {
+  title: string;
+  items: { href: string; label: string }[];
+}
+
+export default function FooterMenu({ title, items }: FooterMenuProps) {
+  if (!items.length) return null;
 
   return (
-    <nav>
-      <ul>
-        {menu.map((item: Menu) => {
-          return <FooterMenuItem key={item.title} item={item} />;
-        })}
+    <div>
+      <h3 className="text-lg font-bold mb-6 text-white">{title}</h3>
+      <ul className="space-y-3">
+        {items.map((item) => (
+          <FooterMenuItem key={item.href} href={item.href}>
+            {item.label}
+          </FooterMenuItem>
+        ))}
       </ul>
-    </nav>
+    </div>
   );
 }

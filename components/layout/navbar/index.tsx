@@ -28,29 +28,29 @@ export async function Navbar() {
               </Link>
 
               {/* Navigation */}
-              <div className="hidden md:flex items-center">
-                <div className="flex items-center space-x-12">
+              <div className="flex-1 flex justify-center -ml-28">
+                <div className="hidden md:flex items-center space-x-12">
                   <Link 
                     href="/notre-histoire" 
-                    className="text-black hover:text-[#006B3F] text-[15px]"
+                    className="text-black hover:text-[#006B3F] text-[15px] transition-colors"
                   >
                     Notre Histoire
                   </Link>
                   <Link 
                     href="/search" 
-                    className="text-black hover:text-[#006B3F] text-[15px]"
+                    className="text-black hover:text-[#006B3F] text-[15px] transition-colors"
                   >
                     Nos Cafés
                   </Link>
                   <Link 
                     href="/processus" 
-                    className="text-black hover:text-[#006B3F] text-[15px]"
+                    className="text-black hover:text-[#006B3F] text-[15px] transition-colors"
                   >
                     Notre Processus
                   </Link>
                   <Link 
                     href="/contact" 
-                    className="text-black hover:text-[#006B3F] text-[15px]"
+                    className="text-black hover:text-[#006B3F] text-[15px] transition-colors"
                   >
                     Contact
                   </Link>

@@ -313,31 +313,65 @@ export async function getCollectionProducts({
 }
 
 export async function getCollections(): Promise<Collection[]> {
-  const res = await shopifyFetch<ShopifyCollectionsOperation>({
-    query: getCollectionsQuery,
-    tags: [TAGS.collections]
-  });
-  const shopifyCollections = removeEdgesAndNodes(res.body?.data?.collections);
-  const collections = [
-    {
-      handle: '',
-      title: 'All',
-      description: 'All products',
-      seo: {
-        title: 'All',
-        description: 'All products'
-      },
-      path: '/search',
-      updatedAt: new Date().toISOString()
-    },
-    // Filter out the `hidden` collections.
-    // Collections that start with `hidden-*` need to be hidden on the search page.
-    ...reshapeCollections(shopifyCollections).filter(
-      (collection) => !collection.handle.startsWith('hidden')
-    )
-  ];
+  try {
+    console.log('=== DEBUG SHOPIFY COLLECTIONS API ===');
+    console.log('Début de la récupération des collections');
+    console.log('URL de l\'API:', endpoint);
+    
+    const res = await shopifyFetch<ShopifyCollectionsOperation>({
+      query: getCollectionsQuery,
+      tags: [TAGS.collections],
+      cache: 'no-store',
+      headers: {
+        'X-Shopify-Storefront-Access-Token': key
+      }
+    });
 
-  return collections;
+    console.log('Réponse brute de Shopify:', JSON.stringify(res.body, null, 2));
+    
+    if (!res.body?.data?.collections) {
+      console.error('Pas de collections dans la réponse');
+      return [];
+    }
+
+    const shopifyCollections = removeEdgesAndNodes(res.body.data.collections);
+    console.log('Collections après removeEdgesAndNodes:', JSON.stringify(shopifyCollections, null, 2));
+
+    if (!Array.isArray(shopifyCollections) || shopifyCollections.length === 0) {
+      console.log('Aucune collection trouvée après transformation');
+      return [];
+    }
+
+    const collections = [
+      {
+        handle: '',
+        title: 'All',
+        description: 'All products',
+        seo: {
+          title: 'All',
+          description: 'All products'
+        },
+        path: '/search',
+        updatedAt: new Date().toISOString()
+      },
+      ...reshapeCollections(shopifyCollections).filter(
+        (collection) => !collection.handle.startsWith('hidden')
+      )
+    ];
+
+    console.log('Collections finales:', JSON.stringify(collections, null, 2));
+    return collections;
+  } catch (error) {
+    console.error('Erreur lors de la récupération des collections:', error);
+    if (error instanceof Error) {
+      console.error('Détails de l\'erreur:', {
+        message: error.message,
+        stack: error.stack
+      });
+    }
+    // En cas d'erreur, retourner un tableau vide au lieu de throw
+    return [];
+  }
 }
 
 export async function getMenu(handle: string): Promise<Menu[]> {
