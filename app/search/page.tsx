@@ -3,8 +3,7 @@ import ProductGridItems from 'components/layout/product-grid-items';
 import { defaultSort, sorting } from 'lib/constants';
 import { getProducts } from 'lib/shopify';
 
-export const runtime = 'edge';
-export const revalidate = 60; // Revalidate every 60 seconds instead of 0
+export const revalidate = 60;
 
 export const metadata = {
   title: 'Search',
