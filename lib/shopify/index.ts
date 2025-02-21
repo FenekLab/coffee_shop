@@ -5,49 +5,49 @@ import { revalidateTag } from 'next/cache';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import {
-    addToCartMutation,
-    createCartMutation,
-    editCartItemsMutation,
-    removeFromCartMutation
+  addToCartMutation,
+  createCartMutation,
+  editCartItemsMutation,
+  removeFromCartMutation
 } from './mutations/cart';
 import { getCartQuery } from './queries/cart';
 import {
-    getCollectionProductsQuery,
-    getCollectionQuery,
-    getCollectionsQuery
+  getCollectionProductsQuery,
+  getCollectionQuery,
+  getCollectionsQuery
 } from './queries/collection';
 import { getMenuQuery } from './queries/menu';
 import { getPageQuery, getPagesQuery } from './queries/page';
 import {
-    getProductQuery,
-    getProductRecommendationsQuery,
-    getProductsQuery
+  getProductQuery,
+  getProductRecommendationsQuery,
+  getProductsQuery
 } from './queries/product';
 import {
-    Cart,
-    Collection,
-    Connection,
-    Image,
-    Menu,
-    Page,
-    Product,
-    ShopifyAddToCartOperation,
-    ShopifyCart,
-    ShopifyCartOperation,
-    ShopifyCollection,
-    ShopifyCollectionOperation,
-    ShopifyCollectionProductsOperation,
-    ShopifyCollectionsOperation,
-    ShopifyCreateCartOperation,
-    ShopifyMenuOperation,
-    ShopifyPageOperation,
-    ShopifyPagesOperation,
-    ShopifyProduct,
-    ShopifyProductOperation,
-    ShopifyProductRecommendationsOperation,
-    ShopifyProductsOperation,
-    ShopifyRemoveFromCartOperation,
-    ShopifyUpdateCartOperation
+  Cart,
+  Collection,
+  Connection,
+  Image,
+  Menu,
+  Page,
+  Product,
+  ShopifyAddToCartOperation,
+  ShopifyCart,
+  ShopifyCartOperation,
+  ShopifyCollection,
+  ShopifyCollectionOperation,
+  ShopifyCollectionProductsOperation,
+  ShopifyCollectionsOperation,
+  ShopifyCreateCartOperation,
+  ShopifyMenuOperation,
+  ShopifyPageOperation,
+  ShopifyPagesOperation,
+  ShopifyProduct,
+  ShopifyProductOperation,
+  ShopifyProductRecommendationsOperation,
+  ShopifyProductsOperation,
+  ShopifyRemoveFromCartOperation,
+  ShopifyUpdateCartOperation
 } from './types';
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN
@@ -84,7 +84,7 @@ export async function shopifyFetch<T>({
         ...(variables && { variables })
       }),
       cache,
-      ...(tags && { next: { tags } })
+      ...(tags && { next: { tags, revalidate: 60 } })
     });
 
     const body = await result.json();
@@ -301,7 +301,8 @@ export async function getCollectionProducts({
       handle: collection,
       reverse,
       sortKey: sortKey === 'CREATED_AT' ? 'CREATED' : sortKey
-    }
+    },
+    cache: 'force-cache'
   });
 
   if (!res.body.data.collection) {
@@ -314,49 +315,23 @@ export async function getCollectionProducts({
 
 export async function getCollections(): Promise<Collection[]> {
   try {
-    console.log('=== DEBUG SHOPIFY COLLECTIONS API ===');
-    console.log('Début de la récupération des collections');
-    console.log('URL de l\'API:', endpoint);
-    
     const res = await shopifyFetch<ShopifyCollectionsOperation>({
       query: getCollectionsQuery,
       tags: [TAGS.collections],
-      cache: 'no-store',
-      headers: {
-        'X-Shopify-Storefront-Access-Token': key
-      }
+      cache: 'force-cache'
     });
 
-    console.log('Réponse brute de Shopify:', JSON.stringify(res.body, null, 2));
+    const collections = removeEdgesAndNodes(res.body.data.collections);
     
-    if (!res.body?.data?.collections) {
-      console.error('Pas de collections dans la réponse');
-      return [];
-    }
-
-    const shopifyCollections = removeEdgesAndNodes(res.body.data.collections);
-    console.log('Collections après removeEdgesAndNodes:', JSON.stringify(shopifyCollections, null, 2));
-
-    if (!Array.isArray(shopifyCollections) || shopifyCollections.length === 0) {
-      console.log('Aucune collection trouvée après transformation');
-      return [];
-    }
-
-    const collections = reshapeCollections(shopifyCollections).filter(
-      (collection) => !collection.handle.startsWith('hidden')
-    );
-
-    console.log('Collections finales:', JSON.stringify(collections, null, 2));
-    return collections;
+    return collections
+      .filter((collection) => collection && !collection.handle.startsWith('hidden'))
+      .map((collection) => ({
+        ...collection,
+        path: `/search/${collection.handle}`
+      }));
+      
   } catch (error) {
-    console.error('Erreur lors de la récupération des collections:', error);
-    if (error instanceof Error) {
-      console.error('Détails de l\'erreur:', {
-        message: error.message,
-        stack: error.stack
-      });
-    }
-    // En cas d'erreur, retourner un tableau vide au lieu de throw
+    console.error('Error fetching collections:', error);
     return [];
   }
 }
@@ -437,7 +412,8 @@ export async function getProducts({
       query,
       reverse,
       sortKey
-    }
+    },
+    cache: 'force-cache'
   });
 
   return reshapeProducts(removeEdgesAndNodes(res.body.data.products));

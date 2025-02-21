@@ -77,7 +77,7 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
                 <h3 className="text-base font-medium text-[#2C2C2C]">Nos Produits</h3>
                 <div className="ml-4 space-y-3">
                   <Link
-                    href="/search/nos-cafes"
+                    href="/search/nos-cafes-dexception"
                     className="flex items-center text-sm text-[#2C2C2C] hover:text-[#006B3F] transition-colors"
                     onClick={closeMobileMenu}
                   >

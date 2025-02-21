@@ -48,7 +48,7 @@ export async function Navbar() {
                     <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                       <div className="bg-white rounded-xl shadow-lg border border-[#006B3F]/10 overflow-hidden min-w-[200px]">
                         <Link 
-                          href="nos-cafes-dexception" 
+                          href="/search/nos-cafes-dexception" 
                           className="flex items-center px-6 py-3 text-[15px] text-black hover:text-[#006B3F] hover:bg-[#006B3F]/5 transition-colors"
                         >
                           <Coffee className="w-4 h-4 mr-3" />

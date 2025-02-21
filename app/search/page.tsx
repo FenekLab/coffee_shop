@@ -15,11 +15,11 @@ interface SearchPageProps {
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const resolvedParams = await searchParams;
-  const { sort, q: searchValue } = resolvedParams as { [key: string]: string };
+  const resolvedSearchParams = await searchParams;
+  const { sort, q: searchValue = '' } = resolvedSearchParams;
   const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
 
-  const products = await getProducts({ sortKey, reverse, query: searchValue });
+  const products = await getProducts({ sortKey, reverse, query: searchValue as string });
   const resultsText = products.length > 1 ? 'résultats' : 'résultat';
 
   return (
