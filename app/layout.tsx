@@ -2,9 +2,7 @@ import { CartProvider } from 'components/cart/cart-context';
 import { Navbar } from 'components/layout/navbar';
 import { WelcomeToast } from 'components/welcome-toast';
 import { GeistSans } from 'geist/font/sans';
-import { getCart } from 'lib/shopify';
 import { ensureStartsWith } from 'lib/utils';
-import { cookies } from 'next/headers';
 import { ReactNode } from 'react';
 import { Toaster } from 'sonner';
 import './globals.css';
@@ -36,14 +34,11 @@ export const metadata = {
     })
 };
 
-export default async function RootLayout({ children }: { children: ReactNode }) {
-  const cartId = (await cookies()).get('cartId')?.value;
-  const cart = getCart(cartId);
-
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={GeistSans.variable}>
       <body className="bg-white text-black selection:bg-[#006B3F]/20">
-        <CartProvider cartPromise={cart}>
+        <CartProvider>
           <Navbar />
           <main>
             {children}

@@ -37,7 +37,7 @@ export default async function CategoryPage(props: {
   const isThé = collection.handle.includes('the');
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-8">
       {/* Hero Section */}
       <div className="bg-gradient-to-b from-[#006B3F]/10 to-transparent -mx-4 px-4 pt-8 pb-16">
         <div className="flex items-center justify-center gap-4 text-center">
@@ -79,11 +79,11 @@ export default async function CategoryPage(props: {
       {/* Collection Description */}
       {collection.description && (
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-[#006B3F]/10">
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-2xl font-serif font-bold text-[#2C2C2C] tracking-tight mb-6">
               À propos de nos {collection.title.toLowerCase()}
             </h2>
-            <div className="prose prose-green">
+            <div className="prose prose-green max-w-none">
               <p className="text-gray-600 leading-relaxed">
                 {collection.description}
               </p>

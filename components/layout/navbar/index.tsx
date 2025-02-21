@@ -1,5 +1,6 @@
 import CartModal from 'components/cart/modal';
 import { getMenu } from 'lib/shopify';
+import { ChevronDown, Coffee, Leaf } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import MobileMenu from './mobile-menu';
@@ -36,12 +37,34 @@ export async function Navbar() {
                   >
                     Notre Histoire
                   </Link>
-                  <Link 
-                    href="/search" 
-                    className="text-black hover:text-[#006B3F] text-[15px] transition-colors"
-                  >
-                    Nos Cafés
-                  </Link>
+                  
+                  {/* Menu déroulant Nos Produits */}
+                  <div className="relative group">
+                    <button className="flex items-center text-black hover:text-[#006B3F] text-[15px] transition-colors group-hover:text-[#006B3F]">
+                      Nos Produits
+                      <ChevronDown className="w-4 h-4 ml-1 transition-transform group-hover:rotate-180" />
+                    </button>
+                    
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                      <div className="bg-white rounded-xl shadow-lg border border-[#006B3F]/10 overflow-hidden min-w-[200px]">
+                        <Link 
+                          href="nos-cafes-dexception" 
+                          className="flex items-center px-6 py-3 text-[15px] text-black hover:text-[#006B3F] hover:bg-[#006B3F]/5 transition-colors"
+                        >
+                          <Coffee className="w-4 h-4 mr-3" />
+                          Nos Cafés
+                        </Link>
+                        <Link 
+                          href="/search/nos-thes" 
+                          className="flex items-center px-6 py-3 text-[15px] text-black hover:text-[#006B3F] hover:bg-[#006B3F]/5 transition-colors"
+                        >
+                          <Leaf className="w-4 h-4 mr-3" />
+                          Nos Thés
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  
                   <Link 
                     href="/processus" 
                     className="text-black hover:text-[#006B3F] text-[15px] transition-colors"
@@ -57,19 +80,14 @@ export async function Navbar() {
                 </div>
               </div>
 
-              {/* Panier */}
-              <div className="hidden md:block">
-                <CartModal />
-              </div>
-
-              {/* Menu Mobile */}
-              <div className="md:hidden flex items-center">
-                <Suspense fallback={null}>
-                  <MobileMenu menu={menu} />
-                </Suspense>
-                <div className="ml-2">
-                  <CartModal />
+              {/* Menu Mobile et Panier */}
+              <div className="flex items-center">
+                <div className="md:hidden">
+                  <Suspense fallback={null}>
+                    <MobileMenu menu={menu} />
+                  </Suspense>
                 </div>
+                <CartModal />
               </div>
             </div>
           </div>

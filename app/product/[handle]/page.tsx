@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { GridTileImage } from 'components/grid/tile';
 import Footer from 'components/layout/footer';
 import { Gallery } from 'components/product/gallery';
 import { ProductProvider } from 'components/product/product-context';
 import { ProductDescription } from 'components/product/product-description';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
-import { getProduct, getProductRecommendations } from 'lib/shopify';
-import { Image } from 'lib/shopify/types';
+import { getProduct, getProducts } from 'lib/shopify';
+import { Image, Product } from 'lib/shopify/types';
+import { Coffee } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
@@ -82,30 +82,72 @@ export default async function ProductPage({ params }: Props) {
           __html: JSON.stringify(productJsonLd)
         }}
       />
-      <div className="mx-auto max-w-screen-2xl px-4">
-        <div className="flex flex-col rounded-lg border border-neutral-200 bg-white p-8 md:p-12 lg:flex-row lg:gap-8">
-          <div className="h-full w-full basis-full lg:basis-4/6">
-            <Suspense
-              fallback={
-                <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden" />
-              }
-            >
-              <Gallery
-                images={product.images.slice(0, 5).map((image: Image) => ({
-                  src: image.url,
-                  altText: image.altText
-                }))}
-              />
-            </Suspense>
-          </div>
+      
+      <div className="bg-[#F5F5F5] min-h-screen py-6 md:py-12">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+            {/* Colonne de gauche - Images */}
+            <div className="w-full lg:w-2/3">
+              <div className="bg-white rounded-2xl shadow-sm border border-[#006B3F]/10 overflow-hidden">
+                {/* Gallery */}
+                <div className="bg-[#006B3F]/5 p-4 md:p-8">
+                  <Suspense
+                    fallback={
+                      <div className="relative aspect-[4/3] md:aspect-[16/9] w-full overflow-hidden rounded-xl bg-[#006B3F]/5 flex items-center justify-center">
+                        <Coffee className="w-12 h-12 text-[#006B3F]/30" />
+                      </div>
+                    }
+                  >
+                    <Gallery
+                      images={product.images.slice(0, 5).map((image: Image) => ({
+                        src: image.url,
+                        altText: image.altText
+                      }))}
+                    />
+                  </Suspense>
+                </div>
 
-          <div className="basis-full lg:basis-2/6">
-            <Suspense fallback={null}>
-              <ProductDescription product={product} />
-            </Suspense>
+                {/* Description Section - Visible uniquement sur desktop */}
+                <div className="hidden lg:block p-8 border-t border-[#006B3F]/10">
+                  <div className="prose prose-green max-w-none">
+                    <h2 className="text-2xl font-serif font-bold text-[#2C2C2C] tracking-tight mb-6">
+                      Description
+                    </h2>
+                    <div 
+                      className="text-gray-600 leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: product.descriptionHtml || '' }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Colonne de droite - Informations produit */}
+            <div className="w-full lg:w-1/3">
+              <div className="bg-white rounded-2xl p-4 md:p-8 shadow-sm border border-[#006B3F]/10">
+                <div className="flex flex-col h-full">
+                  <Suspense fallback={null}>
+                    <ProductDescription product={product} />
+                  </Suspense>
+                  <RelatedProducts id={product.id} />
+                </div>
+              </div>
+
+              {/* Description Section - Visible uniquement sur mobile */}
+              <div className="lg:hidden mt-6 bg-white rounded-2xl p-4 md:p-8 shadow-sm border border-[#006B3F]/10">
+                <div className="prose prose-green max-w-none">
+                  <h2 className="text-2xl font-serif font-bold text-[#2C2C2C] tracking-tight mb-6">
+                    Description
+                  </h2>
+                  <div 
+                    className="text-gray-600 leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: product.descriptionHtml || '' }}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <RelatedProducts id={product.id} />
       </div>
       <Footer />
     </ProductProvider>
@@ -113,39 +155,50 @@ export default async function ProductPage({ params }: Props) {
 }
 
 async function RelatedProducts({ id }: { id: string }) {
-  const relatedProducts = await getProductRecommendations(id);
+  const allProducts = await getProducts({
+    sortKey: 'CREATED_AT',
+    reverse: true
+  });
+  
+  const relatedProducts = allProducts.filter((product: Product) => product.id !== id);
 
   if (!relatedProducts.length) return null;
 
   return (
-    <div className="py-8">
-      <h2 className="mb-4 text-2xl font-bold text-[#2C2C2C]">Produits similaires</h2>
-      <ul className="flex w-full gap-4 overflow-x-auto pt-1">
-        {relatedProducts.map((product) => (
-          <li
+    <div className="mt-8">
+      <div className="h-px bg-[#006B3F]/10 mb-8"></div>
+      <h2 className="text-xl font-serif font-bold text-[#2C2C2C] tracking-tight mb-6">
+        Vous aimerez aussi
+      </h2>
+      <div className="grid grid-cols-2 gap-4">
+        {relatedProducts.slice(0, 2).map((product: Product) => (
+          <Link
             key={product.handle}
-            className="aspect-square w-full flex-none min-[475px]:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5"
+            href={`/product/${product.handle}`}
+            className="group block bg-[#006B3F]/5 rounded-lg p-3 md:p-4 transition-all duration-300 hover:bg-[#006B3F]/10"
           >
-            <Link
-              className="relative h-full w-full"
-              href={`/product/${product.handle}`}
-              prefetch={true}
-            >
-              <GridTileImage
-                alt={product.title}
-                label={{
-                  title: product.title,
-                  amount: product.priceRange.maxVariantPrice.amount,
-                  currencyCode: product.priceRange.maxVariantPrice.currencyCode
-                }}
-                src={product.featuredImage?.url}
-                fill
-                sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
-              />
-            </Link>
-          </li>
+            <div className="relative w-full aspect-square rounded-lg bg-white overflow-hidden mb-2 md:mb-3 border border-[#006B3F]/10">
+              {product.featuredImage ? (
+                <img
+                  src={product.featuredImage.url}
+                  alt={product.title}
+                  className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500"
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Coffee className="w-6 h-6 md:w-8 md:h-8 text-[#006B3F]/30" />
+                </div>
+              )}
+            </div>
+            <h3 className="text-xs md:text-sm font-medium text-[#2C2C2C] group-hover:text-[#006B3F] transition-colors line-clamp-2 mb-1">
+              {product.title}
+            </h3>
+            <p className="text-xs md:text-sm font-medium text-[#006B3F]">
+              {parseFloat(product.priceRange.minVariantPrice.amount).toFixed(2).replace('.', ',')}€
+            </p>
+          </Link>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

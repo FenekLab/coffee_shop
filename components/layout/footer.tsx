@@ -93,14 +93,15 @@ export default async function Footer() {
               <li className="flex items-start space-x-3">
                 <MapPin className="w-5 h-5 text-[#006B3F] flex-shrink-0 mt-1" />
                 <span className="text-white/80">
-                  123 Route des Sanguinaires<br />
-                  20000 Ajaccio
+                  Pl. Marcel Delaunay<br />
+                  20220 L'Île-Rousse<br />
+                  France
                 </span>
               </li>
               <li className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-[#006B3F]" />
-                <a href="tel:+33495123456" className="text-white/80 hover:text-white transition-colors">
-                  04 95 12 34 56
+                <a href="tel:+33495600240" className="text-white/80 hover:text-white transition-colors">
+                  04 95 60 02 40
                 </a>
               </li>
               <li className="flex items-center space-x-3">

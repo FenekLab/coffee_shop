@@ -1,88 +1,135 @@
 'use client';
 
-import { PlusIcon } from '@heroicons/react/24/outline';
-import clsx from 'clsx';
-import { addItem } from 'components/cart/actions';
 import { useProduct } from 'components/product/product-context';
 import { Product, ProductVariant } from 'lib/shopify/types';
-import { useActionState } from 'react';
+import { ShoppingBag } from 'lucide-react';
+import { useTransition } from 'react';
 import { useCart } from './cart-context';
 
-function SubmitButton({
-  availableForSale,
-  selectedVariantId
-}: {
-  availableForSale: boolean;
-  selectedVariantId: string | undefined;
-}) {
-  const buttonClasses =
-    'relative flex w-full items-center justify-center rounded-full bg-blue-600 p-4 tracking-wide text-white';
-  const disabledClasses = 'cursor-not-allowed opacity-60 hover:opacity-60';
+// Vérifie si le produit a réellement des variantes avec des options différentes
+function hasRealOptions(product: Product): boolean {
+  // Si nous n'avons pas de variantes ou une seule variante, pas d'options
+  if (!product.variants.length || product.variants.length <= 1) return false;
+  
+  // Si nous avons plusieurs variantes, vérifions si elles ont des options différentes
+  const firstVariant = product.variants[0];
+  
+  // Vérifier si au moins une variante a des options différentes de la première
+  return product.variants.slice(1).some(variant => 
+    variant.selectedOptions.some(option => {
+      const firstVariantOption = firstVariant?.selectedOptions.find(o => o.name === option.name);
+      return firstVariantOption?.value !== option.value;
+    })
+  );
+}
 
-  if (!availableForSale) {
-    return (
-      <button disabled className={clsx(buttonClasses, disabledClasses)}>
-        Out Of Stock
-      </button>
-    );
-  }
+// Composant pour les produits sans options
+function SimpleAddToCart({ product }: { product: Product }) {
+  const [isPending, startTransition] = useTransition();
+  const { addCartItem } = useCart();
 
-  console.log(selectedVariantId);
-  if (!selectedVariantId) {
-    return (
-      <button
-        aria-label="Please select an option"
-        disabled
-        className={clsx(buttonClasses, disabledClasses)}
-      >
-        <div className="absolute left-0 ml-4">
-          <PlusIcon className="h-5" />
-        </div>
-        Add To Cart
-      </button>
-    );
+  const isOutOfStock = !product.availableForSale;
+  const variant = product.variants[0];
+
+  function handleAdd() {
+    if (!variant) return;
+    
+    try {
+      startTransition(() => {
+        addCartItem(variant, product);
+      });
+    } catch (e) {
+      console.error('Erreur lors de l\'ajout au panier:', e);
+    }
   }
 
   return (
     <button
-      aria-label="Add to cart"
-      className={clsx(buttonClasses, {
-        'hover:opacity-90': true
-      })}
+      onClick={handleAdd}
+      disabled={isPending || isOutOfStock || !variant}
+      className={`
+        w-full h-12 rounded-xl flex items-center justify-center gap-2 text-base font-medium transition-all duration-200
+        ${(isPending || isOutOfStock || !variant)
+          ? 'bg-[#006B3F]/50 text-white cursor-not-allowed'
+          : 'bg-[#006B3F] text-white hover:bg-[#005432] active:scale-[0.98]'
+        }
+      `}
     >
-      <div className="absolute left-0 ml-4">
-        <PlusIcon className="h-5" />
-      </div>
-      Add To Cart
+      <ShoppingBag className="w-5 h-5" />
+      <span>
+        {isPending ? 'Ajout en cours...' : isOutOfStock ? 'Rupture de stock' : 'Ajouter au panier'}
+      </span>
     </button>
   );
 }
 
-export function AddToCart({ product }: { product: Product }) {
-  const { variants, availableForSale } = product;
-  const { addCartItem } = useCart();
+// Composant pour les produits avec options
+function VariantAddToCart({ product }: { product: Product }) {
+  const [isPending, startTransition] = useTransition();
   const { state } = useProduct();
-  const [message, formAction] = useActionState(addItem, null);
+  const { addCartItem } = useCart();
 
-  const variant = variants.find((variant: ProductVariant) =>
-    variant.selectedOptions.every((option) => option.value === state[option.name.toLowerCase()])
+  // Vérifier si toutes les options nécessaires sont sélectionnées
+  const hasAllOptionsSelected = product.options.every(
+    option => state[option.name.toLowerCase()]
   );
-  const defaultVariantId = variants.length === 1 ? variants[0]?.id : undefined;
-  const selectedVariantId = variant?.id || defaultVariantId;
-  const actionWithVariant = formAction.bind(null, selectedVariantId);
-  const finalVariant = variants.find((variant) => variant.id === selectedVariantId)!;
+
+  const selectedVariant = hasAllOptionsSelected
+    ? product.variants.find((variant: ProductVariant) =>
+        variant.selectedOptions.every(
+          (option) => option.value === state[option.name.toLowerCase()]
+        )
+      )
+    : null;
+
+  const isOutOfStock = selectedVariant ? !selectedVariant.availableForSale : false;
+
+  function handleAdd() {
+    if (!selectedVariant) return;
+
+    try {
+      startTransition(() => {
+        addCartItem(selectedVariant, product);
+      });
+    } catch (e) {
+      console.error('Erreur lors de l\'ajout au panier:', e);
+    }
+  }
 
   return (
-    <form
-      action={async () => {
-        addCartItem(finalVariant, product);
-        await actionWithVariant();
-      }}
+    <button
+      onClick={handleAdd}
+      disabled={isPending || isOutOfStock || !selectedVariant}
+      className={`
+        w-full h-12 rounded-xl flex items-center justify-center gap-2 text-base font-medium transition-all duration-200
+        ${(isPending || isOutOfStock || !selectedVariant)
+          ? 'bg-[#006B3F]/50 text-white cursor-not-allowed'
+          : 'bg-[#006B3F] text-white hover:bg-[#005432] active:scale-[0.98]'
+        }
+      `}
     >
-      <SubmitButton availableForSale={availableForSale} selectedVariantId={selectedVariantId} />
-      <p aria-live="polite" className="sr-only" role="status">
-        {message}
-      </p>
-    </form>
+      <ShoppingBag className="w-5 h-5" />
+      <span>
+        {isPending 
+          ? 'Ajout en cours...' 
+          : isOutOfStock 
+          ? 'Rupture de stock' 
+          : !selectedVariant 
+          ? 'Choisir une option' 
+          : 'Ajouter au panier'}
+      </span>
+    </button>
   );
 }
+
+// Composant principal qui choisit la bonne version
+export function AddToCart({ product }: { product: Product }) {
+  const reallyHasOptions = hasRealOptions(product);
+
+  if (!reallyHasOptions) {
+    return <SimpleAddToCart product={product} />;
+  }
+
+  return <VariantAddToCart product={product} />;
+}
+
