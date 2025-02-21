@@ -1,5 +1,6 @@
 import Footer from 'components/layout/footer';
 import Collections from 'components/layout/search/collections';
+import { Suspense } from 'react';
 import ChildrenWrapper from './children-wrapper';
 
 export default function SearchLayout({ children }: { children: React.ReactNode }) {
@@ -13,16 +14,18 @@ export default function SearchLayout({ children }: { children: React.ReactNode }
               <div className="sticky top-24 space-y-6">
                 <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#006B3F]/10">
                   <h2 className="text-lg font-bold text-[#2C2C2C] mb-4">Collections</h2>
-                  <Collections />
+                  <Suspense fallback={<div>Chargement des collections...</div>}>
+                    <Collections />
+                  </Suspense>
                 </div>
-                
-               
               </div>
             </div>
 
             {/* Main Content */}
             <div className="flex-1">
-              <ChildrenWrapper>{children}</ChildrenWrapper>
+              <Suspense fallback={<div>Chargement du contenu...</div>}>
+                <ChildrenWrapper>{children}</ChildrenWrapper>
+              </Suspense>
             </div>
           </div>
         </div>
