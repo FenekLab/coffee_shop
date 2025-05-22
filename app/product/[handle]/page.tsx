@@ -83,18 +83,18 @@ export default async function ProductPage({ params }: Props) {
         }}
       />
       
-      <div className="bg-[#F5F5F5] min-h-screen py-6 md:py-12">
+      <div className="bg-[#F5F5F5] min-h-screen py-4 md:py-12">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
             {/* Colonne de gauche - Images */}
             <div className="w-full lg:w-2/3">
-              <div className="bg-white rounded-2xl shadow-sm border border-[#006B3F]/10 overflow-hidden">
+              <div className="bg-white rounded-xl md:rounded-2xl shadow-sm border border-[#006B3F]/10 overflow-hidden">
                 {/* Gallery */}
-                <div className="bg-[#006B3F]/5 p-4 md:p-8">
+                <div className="bg-[#006B3F]/5 p-3 md:p-8">
                   <Suspense
                     fallback={
-                      <div className="relative aspect-[4/3] md:aspect-[16/9] w-full overflow-hidden rounded-xl bg-[#006B3F]/5 flex items-center justify-center">
-                        <Coffee className="w-12 h-12 text-[#006B3F]/30" />
+                      <div className="relative aspect-[4/3] md:aspect-[16/9] w-full overflow-hidden rounded-lg md:rounded-xl bg-[#006B3F]/5 flex items-center justify-center">
+                        <Coffee className="w-8 h-8 md:w-12 md:h-12 text-[#006B3F]/30" />
                       </div>
                     }
                   >
@@ -108,13 +108,13 @@ export default async function ProductPage({ params }: Props) {
                 </div>
 
                 {/* Description Section - Visible uniquement sur desktop */}
-                <div className="hidden lg:block p-8 border-t border-[#006B3F]/10">
+                <div className="hidden lg:block p-6 md:p-8 border-t border-[#006B3F]/10">
                   <div className="prose prose-green max-w-none">
-                    <h2 className="text-2xl font-serif font-bold text-[#2C2C2C] tracking-tight mb-6">
+                    <h2 className="text-xl md:text-2xl font-serif font-bold text-[#2C2C2C] tracking-tight mb-4 md:mb-6">
                       Description
                     </h2>
                     <div 
-                      className="text-gray-600 leading-relaxed"
+                      className="text-gray-600 leading-relaxed text-sm md:text-base"
                       dangerouslySetInnerHTML={{ __html: product.descriptionHtml || '' }}
                     />
                   </div>
@@ -124,7 +124,7 @@ export default async function ProductPage({ params }: Props) {
 
             {/* Colonne de droite - Informations produit */}
             <div className="w-full lg:w-1/3">
-              <div className="bg-white rounded-2xl p-4 md:p-8 shadow-sm border border-[#006B3F]/10">
+              <div className="bg-white rounded-xl md:rounded-2xl p-4 md:p-8 shadow-sm border border-[#006B3F]/10">
                 <div className="flex flex-col h-full">
                   <Suspense fallback={null}>
                     <ProductDescription product={product} />
@@ -134,13 +134,13 @@ export default async function ProductPage({ params }: Props) {
               </div>
 
               {/* Description Section - Visible uniquement sur mobile */}
-              <div className="lg:hidden mt-6 bg-white rounded-2xl p-4 md:p-8 shadow-sm border border-[#006B3F]/10">
+              <div className="lg:hidden mt-4 md:mt-6 bg-white rounded-xl md:rounded-2xl p-4 md:p-8 shadow-sm border border-[#006B3F]/10">
                 <div className="prose prose-green max-w-none">
-                  <h2 className="text-2xl font-serif font-bold text-[#2C2C2C] tracking-tight mb-6">
+                  <h2 className="text-xl md:text-2xl font-serif font-bold text-[#2C2C2C] tracking-tight mb-4 md:mb-6">
                     Description
                   </h2>
                   <div 
-                    className="text-gray-600 leading-relaxed"
+                    className="text-gray-600 leading-relaxed text-sm md:text-base"
                     dangerouslySetInnerHTML={{ __html: product.descriptionHtml || '' }}
                   />
                 </div>
@@ -165,17 +165,17 @@ async function RelatedProducts({ id }: { id: string }) {
   if (!relatedProducts.length) return null;
 
   return (
-    <div className="mt-8">
-      <div className="h-px bg-[#006B3F]/10 mb-8"></div>
-      <h2 className="text-xl font-serif font-bold text-[#2C2C2C] tracking-tight mb-6">
+    <div className="mt-6 md:mt-8">
+      <div className="h-px bg-[#006B3F]/10 mb-6 md:mb-8"></div>
+      <h2 className="text-lg md:text-xl font-serif font-bold text-[#2C2C2C] tracking-tight mb-4 md:mb-6">
         Vous aimerez aussi
       </h2>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3 md:gap-4">
         {relatedProducts.slice(0, 2).map((product: Product) => (
           <Link
             key={product.handle}
             href={`/product/${product.handle}`}
-            className="group block bg-[#006B3F]/5 rounded-lg p-3 md:p-4 transition-all duration-300 hover:bg-[#006B3F]/10"
+            className="group block bg-[#006B3F]/5 rounded-lg p-2 md:p-4 transition-all duration-300 hover:bg-[#006B3F]/10"
           >
             <div className="relative w-full aspect-square rounded-lg bg-white overflow-hidden mb-2 md:mb-3 border border-[#006B3F]/10">
               {product.featuredImage ? (
@@ -186,7 +186,7 @@ async function RelatedProducts({ id }: { id: string }) {
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <Coffee className="w-6 h-6 md:w-8 md:h-8 text-[#006B3F]/30" />
+                  <Coffee className="w-5 h-5 md:w-8 md:h-8 text-[#006B3F]/30" />
                 </div>
               )}
             </div>

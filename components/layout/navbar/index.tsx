@@ -17,19 +17,19 @@ export async function Navbar() {
         
         <div className="border-b border-[#E5E5E5]">
           <div className="max-w-[1400px] mx-auto">
-            <div className="flex items-center justify-between h-[78px] px-8">
+            <div className="flex items-center justify-between h-[78px] px-4 md:px-8">
               {/* Logo */}
               <Link href="/" className="flex flex-col">
-                <span className="text-[24px] font-bold text-[#006B3F]">
+                <span className="text-lg md:text-[24px] font-bold text-[#006B3F] whitespace-nowrap">
                   LE BON CAFÉ CORSE
                 </span>
-                <span className="text-[12px] text-black/70">
+                <span className="text-[10px] md:text-[12px] text-black/70">
                   DEPUIS 1932
                 </span>
               </Link>
 
               {/* Navigation */}
-              <div className="flex-1 flex justify-center -ml-28">
+              <div className="flex-1 flex justify-center -ml-0 md:-ml-28">
                 <div className="hidden md:flex items-center space-x-12">
                   <Link 
                     href="/notre-histoire" 
@@ -81,7 +81,7 @@ export async function Navbar() {
               </div>
 
               {/* Menu Mobile et Panier */}
-              <div className="flex items-center">
+              <div className="flex items-center gap-2 md:gap-4">
                 <div className="md:hidden">
                   <Suspense fallback={null}>
                     <MobileMenu menu={menu} />

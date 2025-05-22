@@ -12,7 +12,7 @@ export default function HomePage({ products, collections }: { products: Product[
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 md:pt-40 md:pb-32 text-white">
+      <section className="relative pt-20 md:pt-32 pb-16 md:pb-20 px-4 text-white">
         {/* Image de fond */}
         <div className="absolute inset-0 z-0">
           <img 
@@ -33,23 +33,23 @@ export default function HomePage({ products, collections }: { products: Product[
             transition={{ duration: 0.8 }}
             className="max-w-3xl mx-auto text-center"
           >
-            <h1 className="text-5xl md:text-7xl font-serif font-bold leading-tight tracking-tight mb-8">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif font-bold leading-tight tracking-tight mb-6">
               L'Excellence du Café
               <br />
               <span className="text-white/90">Artisanal Corse</span>
             </h1>
-            <p className="text-xl opacity-90 mb-8 leading-relaxed font-light">
+            <p className="text-lg md:text-xl opacity-90 mb-8 leading-relaxed font-light px-4">
               Au cœur de la Corse, notre torréfaction perpétue un savoir-faire familial depuis 1932. 
               Chaque grain raconte une histoire de passion et d'authenticité.
             </p>
-            <div className="flex gap-4 justify-center">
-              <Link href="/search">
-                <Button size="lg" variant="secondary" className="bg-white text-[#006B3F] hover:bg-gray-100 text-base font-medium tracking-wide">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
+              <Link href="search/nos-cafes-dexception" className="w-full sm:w-auto">
+                <Button size="lg" variant="secondary" className="w-full sm:w-auto bg-white text-[#006B3F] hover:bg-gray-100 text-base font-medium tracking-wide">
                   Découvrir nos cafés
                 </Button>
               </Link>
-              <Link href="/notre-histoire">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 text-base font-medium tracking-wide">
+              <Link href="/notre-histoire" className="w-full sm:w-auto">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto border-white text-white hover:bg-white/10 text-base font-medium tracking-wide">
                   Notre histoire
                 </Button>
               </Link>
@@ -59,19 +59,19 @@ export default function HomePage({ products, collections }: { products: Product[
       </section>
 
       {/* Collections Section */}
-      <section className="py-24 relative bg-gradient-to-b from-[#006B3F]/10 via-white to-[#F5F5F5]">
+      <section className="py-16 md:py-24 relative bg-gradient-to-b from-[#006B3F]/10 via-white to-[#F5F5F5]">
         <div className="absolute inset-0 pattern-coffee-beans opacity-10"></div>
         <div className="container mx-auto px-4 relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-center mb-16"
+            className="text-center mb-12 md:mb-16"
           >
-            <span className="text-[#006B3F] font-medium text-base mb-3 inline-block tracking-widest uppercase">
+            <span className="text-[#006B3F] font-medium text-sm md:text-base mb-3 inline-block tracking-widest uppercase">
               Explorez
             </span>
-            <h2 className="text-5xl font-serif font-bold text-[#2C2C2C] mb-6 tracking-tight">Nos Collections</h2>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#2C2C2C] mb-6 tracking-tight px-4">Nos Collections</h2>
             <div className="w-24 h-1 bg-[#006B3F] mx-auto mb-6"></div>
           </motion.div>
           <motion.div
@@ -251,11 +251,11 @@ export default function HomePage({ products, collections }: { products: Product[
       </section>
 
       {/* Products Section */}
-      <section className="py-20 bg-[#F5F5F5]">
+      <section className="py-16 md:py-20 bg-[#F5F5F5]">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-serif font-bold text-[#006B3F] mb-4 tracking-tight">Nos Cafés d'Exception</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto font-light leading-relaxed text-lg">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#006B3F] mb-4 tracking-tight px-4">Nos Cafés d'Exception</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto font-light leading-relaxed text-base md:text-lg px-4">
               Découvrez notre sélection de cafés torréfiés artisanalement dans notre atelier corse, 
               perpétuant une tradition familiale depuis 1932.
             </p>
@@ -287,16 +287,16 @@ export default function HomePage({ products, collections }: { products: Product[
 
       {/* Footer */}
       <footer className="bg-[#2C2C2C] text-white">
-        <div className="container mx-auto px-4 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div className="container mx-auto px-4 py-12 md:py-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
             {/* À Propos */}
             <div>
               <div className="mb-6">
                 <Link href="/" className="flex flex-col">
-                  <span className="text-xl font-bold text-white">
+                  <span className="text-lg md:text-xl font-bold text-white">
                     LE BON CAFÉ CORSE
                   </span>
-                  <span className="text-sm text-white/70">
+                  <span className="text-xs md:text-sm text-white/70">
                     DEPUIS 1932
                   </span>
                 </Link>

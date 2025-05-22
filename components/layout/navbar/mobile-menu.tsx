@@ -104,11 +104,11 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
               </Link>
 
               <Link
-                href="/contact"
+                href="/professionnels"
                 className="block text-base font-medium text-[#2C2C2C] hover:text-[#006B3F] transition-colors"
                 onClick={closeMobileMenu}
               >
-                Contact
+                Professionnels
               </Link>
             </div>
           </div>

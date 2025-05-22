@@ -10,16 +10,6 @@ export default function SearchLayout({ children }: { children: React.ReactNode }
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Sidebar */}
-            <div className="w-full lg:w-64 flex-none">
-              <div className="sticky top-24 space-y-6">
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#006B3F]/10">
-                  <h2 className="text-lg font-bold text-[#2C2C2C] mb-4">Collections</h2>
-                  <Suspense fallback={<div>Chargement des collections...</div>}>
-                    <Collections />
-                  </Suspense>
-                </div>
-              </div>
-            </div>
 
             {/* Main Content */}
             <div className="flex-1">
