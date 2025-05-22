@@ -1,260 +1,106 @@
-import Footer from 'components/layout/footer';
-import { Bean, Coffee, Leaf, Scale, Truck } from 'lucide-react';
+import { Coffee, Settings, Truck } from 'lucide-react';
+import { Metadata } from 'next';
 
-export const metadata = {
-  title: 'Notre Processus | Le Bon Café Corse',
-  description: 'Découvrez notre processus de torréfaction artisanale et notre engagement pour la qualité.'
+export const metadata: Metadata = {
+  title: 'Notre Processus | Le Bon Café',
+  description: 'Découvrez notre processus de torréfaction artisanale.',
 };
 
-export default function Processus() {
+export default function ProcessusPage() {
   return (
-    <div className="bg-white">
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="/images/processus-hero.jpg" 
-            alt="Processus de torréfaction" 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/60"></div>
-        </div>
-
-        <div className="container mx-auto relative z-10">
-          <div className="max-w-3xl mx-auto text-center text-white">
-            <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 tracking-tight">
-              Notre Processus
-            </h1>
-            <p className="text-xl opacity-90 leading-relaxed">
-              Un savoir-faire artisanal transmis de génération en génération depuis 1932.
+    <div className="min-h-screen bg-gradient-to-b from-white to-amber-50/30">
+      {/* Header */}
+      <div className="bg-gradient-to-br from-amber-900 to-amber-800">
+        <div className="max-w-4xl mx-auto px-4 py-24">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-6xl font-bold mb-8 text-white">Notre Processus</h1>
+            <p className="text-xl text-amber-100 max-w-2xl mx-auto leading-relaxed">
+              Un savoir-faire artisanal qui révèle toute la richesse de nos cafés.
             </p>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Introduction */}
-      <section className="py-24 bg-gradient-to-b from-white to-[#F5F5F5]">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <span className="text-[#006B3F] font-medium text-base mb-3 inline-block tracking-widest uppercase">
-              Notre Expertise
-            </span>
-            <h2 className="text-4xl font-serif font-bold mb-6 tracking-tight text-[#2C2C2C]">
-              L'Art de la Torréfaction
-            </h2>
-            <p className="text-gray-600 text-lg leading-relaxed">
-              La torréfaction est un art délicat qui demande patience, expertise et passion. 
-              Chaque grain est soigneusement sélectionné et torréfié selon des méthodes traditionnelles 
-              pour révéler ses arômes les plus subtils.
-            </p>
+      {/* Process Section */}
+      <div className="max-w-4xl mx-auto px-4 py-20">
+        <div className="space-y-20">
+          {/* Sélection */}
+          <div className="relative group">
+            <div className="flex items-center gap-6 mb-8">
+              <div className="w-16 h-16 rounded-2xl bg-amber-100 flex items-center justify-center flex-shrink-0 shadow-md transform group-hover:scale-110 transition-transform duration-300">
+                <Coffee className="w-8 h-8 text-amber-900" />
+              </div>
+              <h2 className="text-3xl font-bold text-amber-900 group-hover:translate-x-2 transition-transform duration-300">
+                La Sélection des Grains
+              </h2>
+            </div>
+            <div className="pl-[4.5rem] border-l-2 border-amber-200 pb-16">
+              <div className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-shadow duration-300">
+                <p className="text-gray-600 leading-relaxed text-lg">
+                  Chez Le Bon Café, chaque grain est sélectionné avec soin, issu de négociations directes avec des producteurs en Amérique centrale, Amérique du Sud, Afrique et Asie. On privilégie les circuits courts, les relations de confiance, et surtout : la qualité.
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* Étapes du processus */}
-      <section className="py-24 bg-[#F5F5F5]">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="space-y-24">
-              {/* Sélection */}
-              <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                  <div className="w-16 h-16 rounded-xl bg-[#006B3F] flex items-center justify-center mb-6">
-                    <Bean className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-3xl font-serif font-bold mb-6 tracking-tight text-[#2C2C2C]">
-                    Sélection des Grains
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed mb-6">
-                    Nous sélectionnons minutieusement les meilleurs grains de café vert auprès de 
-                    producteurs respectueux de l'environnement. Chaque origine est choisie pour 
-                    ses caractéristiques uniques et sa qualité exceptionnelle.
+          {/* Torréfaction */}
+          <div className="relative group">
+            <div className="flex items-center gap-6 mb-8">
+              <div className="w-16 h-16 rounded-2xl bg-amber-100 flex items-center justify-center flex-shrink-0 shadow-md transform group-hover:scale-110 transition-transform duration-300">
+                <Settings className="w-8 h-8 text-amber-900" />
+              </div>
+              <h2 className="text-3xl font-bold text-amber-900 group-hover:translate-x-2 transition-transform duration-300">
+                Notre Torréfaction
+              </h2>
+            </div>
+            <div className="pl-[4.5rem] border-l-2 border-amber-200 pb-16">
+              <div className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-shadow duration-300">
+                <div className="space-y-6 text-gray-600 leading-relaxed text-lg">
+                  <p>
+                    Notre torréfaction est artisanale et lente, en petite quantité, pour respecter le grain et en révéler toute la richesse aromatique. Ici, rien n'est automatisé : chaque torréfaction est maîtrisée à la seconde près, en fonction de l'origine et du profil du café.
                   </p>
-                  <ul className="space-y-3 text-gray-600">
-                    <li className="flex items-center">
-                      <span className="w-2 h-2 bg-[#006B3F] rounded-full mr-3"></span>
-                      Grains 100% Arabica de haute altitude
-                    </li>
-                    <li className="flex items-center">
-                      <span className="w-2 h-2 bg-[#006B3F] rounded-full mr-3"></span>
-                      Origines soigneusement sélectionnées
-                    </li>
-                    <li className="flex items-center">
-                      <span className="w-2 h-2 bg-[#006B3F] rounded-full mr-3"></span>
-                      Contrôle qualité rigoureux
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <img 
-                    src="/images/selection-grains.jpg" 
-                    alt="Sélection des grains de café" 
-                    className="rounded-2xl shadow-xl"
-                  />
+                  <p>
+                    Une fois torréfié, notre café est disponible sous 24 à 48 heures, pour garantir une fraîcheur optimale.
+                  </p>
                 </div>
               </div>
+            </div>
+          </div>
 
-              {/* Torréfaction */}
-              <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div className="order-2 md:order-1">
-                  <img 
-                    src="/images/torrefaction.jpg" 
-                    alt="Processus de torréfaction" 
-                    className="rounded-2xl shadow-xl"
-                  />
-                </div>
-                <div className="order-1 md:order-2">
-                  <div className="w-16 h-16 rounded-xl bg-[#006B3F] flex items-center justify-center mb-6">
-                    <Coffee className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-3xl font-serif font-bold mb-6 tracking-tight text-[#2C2C2C]">
-                    Torréfaction Artisanale
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed mb-6">
-                    Notre maître torréfacteur surveille chaque lot avec attention, ajustant 
-                    la température et le temps de torréfaction pour obtenir le profil aromatique 
-                    parfait. Un savoir-faire transmis depuis trois générations.
-                  </p>
-                  <ul className="space-y-3 text-gray-600">
-                    <li className="flex items-center">
-                      <span className="w-2 h-2 bg-[#006B3F] rounded-full mr-3"></span>
-                      Torréfaction traditionnelle
-                    </li>
-                    <li className="flex items-center">
-                      <span className="w-2 h-2 bg-[#006B3F] rounded-full mr-3"></span>
-                      Petits lots pour plus de précision
-                    </li>
-                    <li className="flex items-center">
-                      <span className="w-2 h-2 bg-[#006B3F] rounded-full mr-3"></span>
-                      Développement optimal des arômes
-                    </li>
-                  </ul>
-                </div>
+          {/* Livraison */}
+          <div className="relative group">
+            <div className="flex items-center gap-6 mb-8">
+              <div className="w-16 h-16 rounded-2xl bg-amber-100 flex items-center justify-center flex-shrink-0 shadow-md transform group-hover:scale-110 transition-transform duration-300">
+                <Truck className="w-8 h-8 text-amber-900" />
               </div>
-
-              {/* Contrôle Qualité */}
-              <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                  <div className="w-16 h-16 rounded-xl bg-[#006B3F] flex items-center justify-center mb-6">
-                    <Scale className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-3xl font-serif font-bold mb-6 tracking-tight text-[#2C2C2C]">
-                    Contrôle Qualité
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed mb-6">
-                    Chaque lot est rigoureusement contrôlé avant d'être conditionné. 
-                    Nous effectuons des tests gustatifs et vérifions la qualité de la 
-                    torréfaction pour garantir l'excellence de nos cafés.
-                  </p>
-                  <ul className="space-y-3 text-gray-600">
-                    <li className="flex items-center">
-                      <span className="w-2 h-2 bg-[#006B3F] rounded-full mr-3"></span>
-                      Tests gustatifs systématiques
+              <h2 className="text-3xl font-bold text-amber-900 group-hover:translate-x-2 transition-transform duration-300">
+                Livraison
+              </h2>
+            </div>
+            <div className="pl-[4.5rem] border-l-2 border-amber-200">
+              <div className="space-y-6">
+                <div className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-shadow duration-300">
+                  <ul className="space-y-6">
+                    <li className="flex items-start gap-4">
+                      <span className="w-3 h-3 mt-2 bg-amber-900 rounded-full"></span>
+                      <span className="text-gray-600 text-lg">En Corse : la livraison se fait en direct, dans la journée ou sous 24h maximum.</span>
                     </li>
-                    <li className="flex items-center">
-                      <span className="w-2 h-2 bg-[#006B3F] rounded-full mr-3"></span>
-                      Contrôle de la torréfaction
-                    </li>
-                    <li className="flex items-center">
-                      <span className="w-2 h-2 bg-[#006B3F] rounded-full mr-3"></span>
-                      Traçabilité complète
+                    <li className="flex items-start gap-4">
+                      <span className="w-3 h-3 mt-2 bg-amber-900 rounded-full"></span>
+                      <span className="text-gray-600 text-lg">Sur le continent : nous expédions en Mondial Relay (ou autre selon préférence), sous 3 à 4 jours ouvrés.</span>
                     </li>
                   </ul>
                 </div>
-                <div>
-                  <img 
-                    src="/images/controle-qualite.jpg" 
-                    alt="Contrôle qualité" 
-                    className="rounded-2xl shadow-xl"
-                  />
-                </div>
-              </div>
-
-              {/* Conditionnement et Livraison */}
-              <div className="grid md:grid-cols-2 gap-12 items-center">
-                <div className="order-2 md:order-1">
-                  <img 
-                    src="/images/conditionnement.jpg" 
-                    alt="Conditionnement des cafés" 
-                    className="rounded-2xl shadow-xl"
-                  />
-                </div>
-                <div className="order-1 md:order-2">
-                  <div className="w-16 h-16 rounded-xl bg-[#006B3F] flex items-center justify-center mb-6">
-                    <Truck className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-3xl font-serif font-bold mb-6 tracking-tight text-[#2C2C2C]">
-                    Conditionnement et Livraison
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed mb-6">
-                    Nos cafés sont conditionnés dans des emballages hermétiques avec valve 
-                    unidirectionnelle pour préserver leur fraîcheur. Nous assurons une 
-                    livraison rapide pour vous garantir un café toujours frais.
+                <div className="bg-gradient-to-br from-amber-900 to-amber-800 rounded-2xl p-8 shadow-md">
+                  <p className="text-xl font-medium text-white italic text-center">
+                    Du grain vert à la tasse, notre obsession reste la même : la fraîcheur, le goût, l'authenticité.
                   </p>
-                  <ul className="space-y-3 text-gray-600">
-                    <li className="flex items-center">
-                      <span className="w-2 h-2 bg-[#006B3F] rounded-full mr-3"></span>
-                      Emballage hermétique
-                    </li>
-                    <li className="flex items-center">
-                      <span className="w-2 h-2 bg-[#006B3F] rounded-full mr-3"></span>
-                      Livraison rapide
-                    </li>
-                    <li className="flex items-center">
-                      <span className="w-2 h-2 bg-[#006B3F] rounded-full mr-3"></span>
-                      Fraîcheur garantie
-                    </li>
-                  </ul>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Engagement Qualité */}
-      <section className="py-24 bg-[#006B3F]">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center text-white">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 tracking-tight">
-              Notre Engagement Qualité
-            </h2>
-            <p className="text-xl opacity-90 leading-relaxed mb-12">
-              Chaque tasse de café reflète notre engagement pour l'excellence et 
-              notre passion pour l'art de la torréfaction artisanale.
-            </p>
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  icon: <Bean className="w-8 h-8" />,
-                  title: "Sélection Premium",
-                  description: "Les meilleurs grains soigneusement sélectionnés"
-                },
-                {
-                  icon: <Coffee className="w-8 h-8" />,
-                  title: "Savoir-faire",
-                  description: "Une expertise transmise depuis 1932"
-                },
-                {
-                  icon: <Leaf className="w-8 h-8" />,
-                  title: "Développement Durable",
-                  description: "Un engagement pour l'environnement"
-                }
-              ].map((item, index) => (
-                <div key={index} className="text-center">
-                  <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-4">
-                    {item.icon}
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                  <p className="text-white/80">{item.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
+      </div>
     </div>
   );
 } 

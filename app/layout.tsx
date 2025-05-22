@@ -42,8 +42,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Navbar />
           <main>
             {children}
-            <Toaster closeButton />
-            <WelcomeToast />
+            
           </main>
         </CartProvider>
       </body>

@@ -72,10 +72,10 @@ export async function Navbar() {
                     Notre Processus
                   </Link>
                   <Link 
-                    href="/contact" 
+                    href="/professionnels" 
                     className="text-black hover:text-[#006B3F] text-[15px] transition-colors"
                   >
-                    Contact
+                    Professionnels
                   </Link>
                 </div>
               </div>

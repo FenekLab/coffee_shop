@@ -98,9 +98,28 @@ export async function updateItemQuantity(
 
 export async function redirectToCheckout() {
   let cartId = (await cookies()).get('cartId')?.value;
+  
+  if (!cartId) {
+    // If there's no cart, create one
+    const cart = await createCart();
+    cartId = cart.id;
+    (await cookies()).set('cartId', cartId!);
+  }
+
   let cart = await getCart(cartId);
 
-  redirect(cart!.checkoutUrl);
+  if (!cart?.checkoutUrl) {
+    // If cart is invalid or expired, create a new one
+    cart = await createCart();
+    (await cookies()).set('cartId', cart.id!);
+  }
+
+  if (cart?.checkoutUrl) {
+    redirect(cart.checkoutUrl);
+  } else {
+    // If we still can't get a checkout URL, redirect to home
+    redirect('/');
+  }
 }
 
 export async function createCartAndSetCookie() {

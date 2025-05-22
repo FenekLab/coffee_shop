@@ -276,10 +276,12 @@ export default function HomePage({ products, collections }: { products: Product[
             Rendez-vous à notre atelier au cœur de la Corse et découvrez les secrets de
             notre torréfaction artisanale.
           </p>
-          <Button variant="secondary" size="lg" className="bg-white text-[#006B3F] hover:bg-gray-100 text-base font-medium tracking-wide">
-            Nous trouver
-            <ChevronRight className="ml-2 h-4 w-4" />
-          </Button>
+          <Link href="/notre-histoire">
+            <Button variant="secondary" size="lg" className="bg-white text-[#006B3F] hover:bg-gray-100 text-base font-medium tracking-wide">
+              Nous trouver
+              <ChevronRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
         </div>
       </section>
 
@@ -304,10 +306,10 @@ export default function HomePage({ products, collections }: { products: Product[
                 Notre passion : vous offrir des cafés d'exception.
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="text-white/80 hover:text-white transition-colors">
+                <a href="https://facebook.com/leboncafecorse" target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-white transition-colors">
                   <Facebook className="w-5 h-5" />
                 </a>
-                <a href="#" className="text-white/80 hover:text-white transition-colors">
+                <a href="https://instagram.com/leboncafecorse" target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-white transition-colors">
                   <Instagram className="w-5 h-5" />
                 </a>
               </div>
